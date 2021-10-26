@@ -1,12 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Page Title</title>
+  <title>Rock Paper Scissors</title>
   <meta charset="UTF-8"/>
 </head>
 <body>
+  <h1>Rock Paper Scissors</h1> 
+  <button class="rock">Rock</button>
+  <button class="paper">Paper</button>
+  <button class="scissors">Scissors</button>
+  <div class="results"></div>
   <script>
-    
+
+    const rock = document.querySelector(".rock");
+    const paper = document.querySelector(".paper");
+    const scissors = document.querySelector(".scissors");
+    const results = document.querySelector(".results");
+
+    const computerChoice = document.createElement("p");
+    const playerChoice = document.createElement("p");
+    const roundResults = document.createElement("p");
+    const score = document.createElement("p");
+    const gameOver = document.createElement("p");
+
+    rock.addEventListener('click', function(e){game("rock")});
+    paper.addEventListener('click', function(e){game("paper")});
+    scissors.addEventListener('click', function(e){game("scissors")});
+
+    let playerScore = 0;
+    let computerScore = 0; 
+
     function computerPlay() {
       let choice = Math.floor(Math.random() * 4);
       if (choice === 0) {
@@ -18,55 +41,60 @@
       }
     }
 
-    function playRound() {
+    function playRound(playerSelection) {
       const computerSelection = computerPlay();
-      console.log("Computer choice is: " + computerSelection);
-      const playerSelection = (prompt("Choose rock, paper, or scissors")).toLowerCase();
+
+      computerChoice.textContent = "Computer choice is: " + computerSelection;
+      playerChoice.textContent = "Player choice is: " + playerSelection;
+
       if (computerSelection == "paper" && playerSelection == "rock") {
-        return "You Lose! Paper beats rock";
+        roundResults.textContent = "You Lose! Paper beats rock";
         } else if (computerSelection == "scissors" && playerSelection == "rock") {
-          return "You win! Rock beats scissors";
+          roundResults.textContent = "You win! Rock beats scissors";
+          playerScore++;
         }
         else if (computerSelection == "rock" && playerSelection == "paper") {
-          return "You win! Paper beats rock";
+          roundResults.textContent = "You win! Paper beats rock";
+          playerScore++;
         }
         else if (computerSelection == "scissors" && playerSelection == "paper") {
-          return "You lose! Scissors beats paper";
+          roundResults.textContent = "You lose! Scissors beats paper";
+          computerScore++;
         }
         else if (computerSelection == "rock" && playerSelection == "scissors") {
-          return "You lose! Rock beats scissors";
+          roundResults.textContent = "You lose! Rock beats scissors";
+          computerScore++;
         }
         else if (computerSelection == "paper" && playerSelection == "scissors") {
-          return "You win! Scissors beats paper";
-        }
-        else {
-          return "Tie!"
-        }
-    }
-
-    function game(){
-      let computerScore = 0;
-      let playerScore = 0;
-      while (computerScore < 5 && playerScore < 5) {
-        let result = playRound();
-        if (result.includes("win")) {
+          roundResults.textContent = "You win! Scissors beats paper";
           playerScore++;
-        } else if (result.includes("lose")) {
-          computerScore++;  
-        } else {
-            console.log("Tie!");
         }
-        console.log("Player Score: " + playerScore);
-        console.log("Computer Score: " + computerScore);
-      }
-      if (playerScore == 5) {
-        console.log("You win! Congrats!");
-      } else {
-        console.log("You lose! Computer wins")
-      }
-    }
+        else if (computerSelection === playerSelection) {
+          roundResults.textContent = "Tie!"
+        }
+      
+      score.textContent = ("Player score is: " + playerScore + ", Computer score is: " + computerScore);
 
-    console.log(game());
+      results.appendChild(computerChoice);
+      results.appendChild(playerChoice);
+      results.appendChild(roundResults);
+      results.appendChild(score);
+      }
+
+    function game(playerSelection){
+      if (computerScore < 5 && playerScore < 5) {
+        playRound(playerSelection);
+      } else if (playerScore == 5) {
+        gameOver.textContent = "You win! Congrats!";
+      } else if (computerScore == 5) {
+        gameOver.textContent = "You lose! Computer wins";
+      }
+      results.appendChild(gameOver);
+    } 
+
+
+  
+
 
   </script>
 </body>
